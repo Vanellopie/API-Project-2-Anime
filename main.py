@@ -44,12 +44,14 @@ def read_anime_lists():
 
 @app.put("/anime_lists/{anime_lists_id}", response_model=AnimeList)
 def update_anime_list(anime_lists_id: int, anime_lists: AnimeList):
-    data = anime_list.dict(exclude_unset=True)
-    updated_data = supabase.table("animes_lists").update(data).eq("id", anime_lists_id).execute()
+    data = anime_lists.dict(exclude_unset=True)
+    updated_data = supabase.table("anime_lists").update(data).eq("id", anime_lists_id).execute()
     if updated_data.data:
         return updated_data.data[0]
     else:
         raise HTTPException(status_code=400, detail="Error updating data")
+
+
 
 @app.delete("/anime_lists/{anime_lists_id}", response_model=List[AnimeList])
 def delete_anime_lists(anime_lists_id: int):
