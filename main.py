@@ -24,7 +24,7 @@ class AnimeList(BaseModel):
 
 app = FastAPI()
 
-@app.post("/anime_lists/", response_model=NineAnime)
+@app.post("/anime_lists/", response_model=AnimeList)
 def create_anime_list(anime_list: AnimeList):
     data = anime_list.dict(exclude_unset=True)
     inserted_data = supabase.table("anime_lists").insert(data).execute()
