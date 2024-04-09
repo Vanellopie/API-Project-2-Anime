@@ -11,7 +11,7 @@ supabase_key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 supabase: Client = create_client(supabase_url, supabase_key)
 
-class AnimeList(BaseModel):
+class NineAnime(BaseModel):
     id: Optional[int] = None
     Name: Optional[str] = None
     Score: Optional[int] = None
@@ -24,8 +24,8 @@ class AnimeList(BaseModel):
 
 app = FastAPI()
 
-@app.post("/AnimeList/", response_model=AnimeList)
-def create_anime_list(anime_list: AnimeList):
+@app.post("/anime_list/", response_model=NineAnime)
+def create_anime_list(anime_list: NineAnime):
     data = anime_list.dict(exclude_unset=True)
     inserted_data = supabase.table("anime_list").insert(data).execute()
     if inserted_data.data:
@@ -33,7 +33,7 @@ def create_anime_list(anime_list: AnimeList):
     else:
         raise HTTPException(status_code=400, detail="Error inserting data")
 
-@app.get("/anime_list/", response_model=List[AnimeList])
+@app.get("/anime_list/", response_model=List[NineAnime])
 def read_anime_list():
     data = supabase.table("anime_list").select("*").execute()
     if data.data:
