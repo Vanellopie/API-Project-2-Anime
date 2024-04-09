@@ -16,7 +16,7 @@ class AnimeList(BaseModel):
     Name: Optional[str] = None
     Score: Optional[int] = None
     Genres: Optional[int] = None
-    English_name: Optional[str] = None
+    # English_name: Optional[str] = None
     Type: Optional[str] = None
     Episodes: Optional[float] = None
     Source: Optional[str] = None
