@@ -42,7 +42,7 @@ def read_anime_list():
         raise HTTPException(status_code=400, detail="Error reading data")
     
 
-@app.put("/anime_list/{anime_list_id}", response_model=AnimeList)
+@app.put("/anime_list/{anime_list_id}", response_model=NineAnime)
 def update_anime_list(anime_list_id: int, anime_list: AnimeList):
     data = anime_list.dict(exclude_unset=True)
     updated_data = supabase.table("anime_list").update(data).eq("id", anime_list_id).execute()
@@ -51,7 +51,7 @@ def update_anime_list(anime_list_id: int, anime_list: AnimeList):
     else:
         raise HTTPException(status_code=400, detail="Error updating data")
 
-@app.delete("/anime_list/{anime_list_id}", response_model=List[AnimeList])
+@app.delete("/anime_list/{anime_list_id}", response_model=List[NineAnime])
 def delete_anime_list(anime_list_id: int):
     deleted_data = supabase.table("anime_list").delete().eq("id", anime_list_id).execute()
     if deleted_data.data:
