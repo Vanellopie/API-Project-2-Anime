@@ -24,39 +24,71 @@ class AnimeList(BaseModel):
 
 app = FastAPI()
 
+# @app.post("/anime_lists/", response_model=AnimeList)
+# def create_anime_list(anime_list: AnimeList):
+#     data = anime_list.dict(exclude_unset=True)
+#     inserted_data = supabase.table("anime_lists").insert(data).execute()
+#     if inserted_data.data:
+#         return inserted_data.data[0]
+#     else:
+#         raise HTTPException(status_code=400, detail="Error inserting data")
+
+# @app.get("/anime_lists/", response_model=List[AnimeList])
+# def read_anime_lists():
+#     data = supabase.table("anime_lists").select("*").execute()
+#     if data.data:
+#         return data.data
+#     else:
+#         raise HTTPException(status_code=400, detail="Error reading data")
+    
+
+# @app.put("/anime_lists/{anime_lists_id}", response_model=AnimeList)
+# def update_anime_list(anime_lists_id: int, anime_lists: AnimeList):
+#     data = anime_lists.dict(exclude_unset=True)
+#     updated_data = supabase.table("anime_lists").update(data).eq("id", anime_lists_id).execute()
+#     if updated_data.data:
+#         return updated_data.data[0]
+#     else:
+#         raise HTTPException(status_code=400, detail="Error updating data")
+
+
+
+# @app.delete("/anime_lists/{anime_lists_id}", response_model=List[AnimeList])
+# def delete_anime_lists(anime_lists_id: int):
+#     deleted_data = supabase.table("anime_lists").delete().eq("id", anime_lists_id).execute()
+#     if deleted_data.data:
+#         return deleted_data.data
+#     else:
+#         raise HTTPException(status_code=400, detail="Error deleting data")
+
+
+
 @app.post("/anime_lists/", response_model=AnimeList)
 def create_anime_list(anime_list: AnimeList):
     data = anime_list.dict(exclude_unset=True)
-    inserted_data = supabase.table("anime_lists").insert(data).execute()
-    if inserted_data.data:
-        return inserted_data.data[0]
-    else:
-        raise HTTPException(status_code=400, detail="Error inserting data")
+    response = supabase.table("anime_lists").insert(data).execute()
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail=response.error)
+    return response.data[0]
 
 @app.get("/anime_lists/", response_model=List[AnimeList])
 def read_anime_lists():
-    data = supabase.table("anime_lists").select("*").execute()
-    if data.data:
-        return data.data
-    else:
-        raise HTTPException(status_code=400, detail="Error reading data")
-    
+    response = supabase.table("anime_lists").select("*").execute()
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail=response.error)
+    return response.data
 
 @app.put("/anime_lists/{anime_lists_id}", response_model=AnimeList)
-def update_anime_list(anime_lists_id: int, anime_lists: AnimeList):
-    data = anime_lists.dict(exclude_unset=True)
-    updated_data = supabase.table("anime_lists").update(data).eq("id", anime_lists_id).execute()
-    if updated_data.data:
-        return updated_data.data[0]
-    else:
-        raise HTTPException(status_code=400, detail="Error updating data")
-
-
+def update_anime_list(anime_lists_id: int, anime_list: AnimeList):
+    data = anime_list.dict(exclude_unset=True)
+    response = supabase.table("anime_lists").update(data).eq("id", anime_lists_id).execute()
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail=response.error)
+    return response.data[0]
 
 @app.delete("/anime_lists/{anime_lists_id}", response_model=List[AnimeList])
 def delete_anime_lists(anime_lists_id: int):
-    deleted_data = supabase.table("anime_lists").delete().eq("id", anime_lists_id).execute()
-    if deleted_data.data:
-        return deleted_data.data
-    else:
-        raise HTTPException(status_code=400, detail="Error deleting data")
+    response = supabase.table("anime_lists").delete().eq("id", anime_lists_id).execute()
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail=response.error)
+    return response.data
